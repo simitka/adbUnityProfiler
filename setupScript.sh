@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-rm setupScript.sh
-
 clear
 echo
 echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
@@ -54,7 +52,11 @@ cd "$actual_path" || {
     exit 3
 }
 
-curl -O https://raw.githubusercontent.com/Simitka/adbUnityProfiler/main/start.sh
+curl -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip
+unzip main.zip -d .
+rm setupScript.sh
+
+source ./utils.sh
 
 cat <<EOL >$config_file
 actualPath:$actual_path
