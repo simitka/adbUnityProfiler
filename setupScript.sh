@@ -31,6 +31,14 @@ check_and_install "1" "brew" "/bin/bash -c \"\$(curl -fsSL https://raw.githubuse
 check_and_install "2" "jq" "brew install jq" "jq --version"
 check_and_install "3" "adb" "brew install android-platform-tools" "adb --version"
 
+download_repo() {
+    curl -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip
+    unzip main.zip -d .
+    rm setupScript.sh
+}
+
+source ./utils.sh
+
 default_path="$HOME/Documents/$repository_name"
 
 echo "============================================================"
@@ -51,12 +59,6 @@ cd "$actual_path" || {
     echo "❌ Error: couldn't create folder in $actual_path"
     exit 3
 }
-
-curl -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip
-unzip main.zip -d .
-rm setupScript.sh
-
-source ./utils.sh
 
 cat <<EOL >$config_file
 actualPath:$actual_path
