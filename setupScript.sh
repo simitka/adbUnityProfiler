@@ -2,9 +2,6 @@
 
 rm setupScript.sh
 
-repository_name="adbUnityProfiler"
-command_to_run="adbreadprofile"
-
 clear
 echo
 echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
@@ -52,12 +49,16 @@ else
 fi
 
 mkdir -p "$actual_path"
-cd "$actual_path" || { echo "❌ Error: couldn't create folder in $actual_path"; exit 3; }
+cd "$actual_path" || {
+    echo "❌ Error: couldn't create folder in $actual_path"
+    exit 3
+}
 
 curl -O https://raw.githubusercontent.com/Simitka/adbUnityProfiler/main/start.sh
 
-cat <<EOL >settings.conf
+cat <<EOL >$config_file
 actualPath:$actual_path
+appBundleName:null
 EOL
 
 echo
@@ -78,4 +79,5 @@ sudo mv "$temp_script" /usr/local/bin/$command_to_run
 sudo chmod +x /usr/local/bin/$command_to_run
 
 chmod +x start.sh
+clear
 $command_to_run
