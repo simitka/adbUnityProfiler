@@ -27,15 +27,38 @@ check_and_install() {
     fi
 }
 
+download_repo() {
+    echo "⏳ Starting download..."
+    if curl -L -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip; then
+        echo "⏳ Download successful. Unpacking the archive..."
+
+        if [[ -s main.zip ]]; then
+            unzip main.zip -d .
+            rm main.zip  
+
+            mv adbUnityProfiler-main/* ./
+            rmdir adbUnityProfiler-main
+
+            if [[ -f setupScript.sh ]]; then
+                echo "Removing setupScript.sh..."
+                rm setupScript.sh
+            fi
+        else
+            echo "❌ Error: Downloaded file is empty."
+            exit 4
+        fi
+    else
+        echo "❌ Error: Failed to download the repository."
+        exit 4
+    fi
+    echo "✅ Downloading and unpacking repository is complete."
+}
+
 check_and_install "1" "brew" "/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"" "brew --version"
 check_and_install "2" "jq" "brew install jq" "jq --version"
 check_and_install "3" "adb" "brew install android-platform-tools" "adb --version"
 
-download_repo() {
-    curl -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip
-    unzip main.zip -d .
-    rm setupScript.sh
-}
+download_repo
 
 source ./utils.sh
 
