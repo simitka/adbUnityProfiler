@@ -26,7 +26,7 @@ if [ -z "$3" ]; then
 fi
 
 read_profile_on_keypress() {
-  trap handle_interrupt SIGINT
+  trap handle_interrupt INT
   update_count=0
   while true; do
     update_count=$((update_count + 1))
@@ -45,7 +45,7 @@ read_profile_on_keypress() {
 }
 
 read_profile_with_interval() {
-  trap handle_interrupt SIGINT
+  trap handle_interrupt INT
   update_count=0
   read_profile_state="true"
   while [[ "$read_profile_state" == "true" ]]; do
@@ -65,10 +65,12 @@ read_profile_with_interval() {
 }
 
 handle_interrupt() {
-  trap - SIGINT
+  trap - INT
+  stty sane
   read_profile_state="false"
   echo
   echo "👋 Returning to the menu..."
+  sleep 1
   $command_to_run
 }
 

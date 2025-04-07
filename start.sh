@@ -1,7 +1,8 @@
 #!/bin/zsh
 
 source ./utils.sh
-trap - SIGINT
+trap - INT
+stty sane
 
 setup_app_bundle() {
   clear
