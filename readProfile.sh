@@ -41,7 +41,7 @@ read_profile_on_keypress() {
     echo "🔁 Update count: $update_count"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
-    read -r -n 1
+    dd bs=1 count=1 >/dev/null 2>&1
   done
 }
 
