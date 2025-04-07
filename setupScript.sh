@@ -30,13 +30,11 @@ download_repo() {
             rm main.zip
 
             mv adbUnityProfiler-main/* ./
-            echo "переместили файлы"
-            #rmdir adbUnityProfiler-main
+            rmdir adbUnityProfiler-main
 
             if [[ -f setupScript.sh ]]; then
                 echo "Removing setupScript.sh..."
-                #rm setupScript.sh
-                echo "(не)удалили файл"
+                rm setupScript.sh
             fi
         else
             echo "❌ Error: Downloaded file is empty."
@@ -51,26 +49,18 @@ download_repo() {
 
 move_to_actual_path() {
     if [[ ! -d "$actual_path" ]]; then
-        echo "test0: $(pwd)"
         echo "⏳ Folder '$actual_path' does not exist. Creating..."
-        echo "test1: $(pwd)"
         mkdir -p "$actual_path" || {
             echo "❌ Error: Failed to create folder '$actual_path'"
             exit 7
         }
     else
         echo "⏳ Folder '$actual_path' exists. Entering..."
-        echo "test2: $(pwd)"
     fi
 
-    # Включаем nullglob в zsh для того, чтобы избежать ошибки, если нет файлов
-    echo "test3: $(pwd)"
     setopt nullglob
-
-    # Перебираем все файлы в текущей директории, включая скрытые
     for item in * .[^.]*; do
         echo "test4: $(pwd)"
-        # Пропускаем текущую и родительскую директорию
         [[ "$item" == "." || "$item" == ".." ]] && continue
 
         if ! mv -- "$item" "$actual_path"/; then
@@ -80,8 +70,6 @@ move_to_actual_path() {
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
-
-    # Отключаем nullglob в zsh
     unsetopt nullglob
 
     echo "✅ All files have been moved to $actual_path."
@@ -100,6 +88,8 @@ move_to_actual_path() {
 
     echo "✅ All files have been moved to $actual_path, and you have moved to it."
 }
+
+rm /usr/local/bin/adbreadprofile
 
 download_repo
 
