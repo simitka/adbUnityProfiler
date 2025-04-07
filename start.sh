@@ -64,6 +64,7 @@ setup_app_bundle() {
 }
 
 choose_adb
+clear
 
 if ! grep -q '^appBundleName:' "$config_file"; then
   echo "appBundleName:null" >>"$config_file"
