@@ -30,11 +30,11 @@ download_repo() {
             rm main.zip
 
             mv adbUnityProfiler-main/* ./
-            rmdir adbUnityProfiler-main
+            #rmdir adbUnityProfiler-main
 
             if [[ -f setupScript.sh ]]; then
                 echo "Removing setupScript.sh..."
-                rm setupScript.sh
+                #rm setupScript.sh
             fi
         else
             echo "❌ Error: Downloaded file is empty."
@@ -49,6 +49,7 @@ download_repo() {
 
 move_to_actual_path() {
     if [[ ! -d "$actual_path" ]]; then
+        echo "test0: $(pwd)"
         echo "⏳ Folder '$actual_path' does not exist. Creating..."
         echo "test1: $(pwd)"
         mkdir -p "$actual_path" || {
