@@ -10,19 +10,19 @@ file_path="$profiles_path/$selected_file"
 if [ -z "$1" ]; then
   echo "❌ Error: ADB device is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
-  exit 14
+  exit 13
 fi
 
 if [ -z "$2" ]; then
   echo "❌ Error: JSON file name is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
-  exit 15
+  exit 14
 fi
 
 if [ -z "$3" ]; then
   echo "❌ Error: Path to the profiles folder is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
-  exit 16
+  exit 15
 fi
 
 read_profile_on_keypress() {

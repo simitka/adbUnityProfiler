@@ -6,7 +6,6 @@ app_bundle_name=$(grep '^appBundleName:' "settings.conf" | cut -d':' -f2 | xargs
 profiles_path="/sdcard/Android/data/$app_bundle_name/files/profiles"
 device="$1"
 
-
 clear
 
 if ! adb -s "$device" shell "[ -d $profiles_path ]"; then
