@@ -55,9 +55,10 @@ move_to_actual_path() {
             exit 7
         }
     else
-        echo "⏳ Moving files to folder '$actual_path'..."
+        echo "⏳ Folder '$actual_path' exists. Entering..."
     fi
 
+    shopt -s nullglob
     for item in * .*; do
         [[ "$item" == "." || "$item" == ".." ]] && continue
         if ! mv -- "$item" "$actual_path"/; then
@@ -67,6 +68,8 @@ move_to_actual_path() {
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
+    shopt -u nullglob
+
     echo "✅ All files have been moved to $actual_path."
 
     current_dir=$(pwd)
