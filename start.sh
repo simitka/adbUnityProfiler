@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 source ./utils.sh
+trap - SIGINT
 
 setup_app_bundle() {
   clear
@@ -99,7 +100,7 @@ else
       setup_app_bundle
       ;;
     3)
-      kill -9 $$
+      exit 0
       ;;
     esac
   else
