@@ -89,8 +89,7 @@ else
   if [[ "$choice" =~ ^[1-2]$ ]]; then
     case "$choice" in
     1)
-      echo "Конец"
-      #$command_to_run
+      ./chooseProfile.sh
       ;;
     2)
       sed -i '' "s/^appBundleName:.*/appBundleName:null/" "$config_file"
