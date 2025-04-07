@@ -180,7 +180,6 @@ show_text_styles() {
 
 # Функция для вывода сообщения и выполнения команды farmx
 function finalize() {
-    echo
     reverse_text "To continue, press any button..."
     stty -icanon
     dd bs=1 count=1 >/dev/null 2>&1

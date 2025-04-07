@@ -3,6 +3,7 @@
 source ./utils.sh
 
 setup_app_bundle() {
+  clear
   echo "You need to specify the bundle name of the application whose profiles you want to work with."
   echo
   bold_text "$(reverse_text 'Select an option from the list and enter the corresponding number:')"

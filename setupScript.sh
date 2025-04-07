@@ -82,8 +82,6 @@ move_to_actual_path() {
         echo "❌ Error: Failed to remove folder: '$current_dir'."
         exit 10
     }
-
-    echo "✅ Successfully moved to '$actual_path'."
 }
 
 rm /usr/local/bin/adbreadprofile
@@ -126,7 +124,7 @@ EOL
 echo
 echo
 echo "\033[1m⏳ Creating the console command '$command_to_run' to run $repository_name\033[0m"
-echo "(📝 enter the password from your MacOS user. The password is not displayed when you enter it.)"
+echo "(📝 enter the password from your MacOS user. The password is not displayed when you enter it)"
 
 if [[ ! -d "/usr/local/bin" ]]; then
     echo "⏳ The '/usr/local/bin' folder does not exist. Creating it..."
