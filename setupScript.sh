@@ -1,13 +1,6 @@
 #!/bin/zsh
 
-clear
-echo
-echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
-echo "any questions about how the script works – https://simitka.io"
-echo
-echo "⏳ Launching the setup assistant."
-echo "⏳ Check that all the necessary packages are installed..."
-echo "============================================================"
+default_path="$HOME/Documents/$repository_name"
 
 check_and_install() {
     local package_number="$1"
@@ -34,7 +27,7 @@ download_repo() {
 
         if [[ -s main.zip ]]; then
             unzip main.zip -d .
-            rm main.zip  
+            rm main.zip
 
             mv adbUnityProfiler-main/* ./
             rmdir adbUnityProfiler-main
@@ -54,6 +47,44 @@ download_repo() {
     echo "✅ Downloading and unpacking repository is complete."
 }
 
+move_to_actual_path() {
+    IFS=$'\n'
+    for item in * .*; do
+        [[ "$item" == "." || "$item" == ".." || "$item" == "$actual_path" ]] && continue
+        [[ ! -e "$item" ]] && continue
+
+        if ! mv -- "$item" "$actual_path"/; then
+            echo "❌ Error: an error occurred when moving file '$item' to folder '$actual_path'."
+            exit 7
+        else
+            echo "✅ Moved: '$item' → '$actual_path/'"
+        fi
+    done
+
+    current_dir=$(pwd)
+
+    cd "$actual_path" || 
+    {
+        echo "❌ Error: Couldn't delete folder: $current_dir"
+        exit 8
+    }
+
+    rmdir "$current_dir" || {
+        echo "❌ Error: Couldn't delete folder: $current_dir"
+        exit 9
+    }
+    echo "✅ All files have been moved to $actual_path, and you have moved to it."
+
+}
+
+clear
+echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
+echo "any questions about how the script works – https://simitka.io"
+echo
+echo "⏳ Launching the setup assistant."
+echo "⏳ Check that all the necessary packages are installed..."
+echo "============================================================"
+
 check_and_install "1" "brew" "/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"" "brew --version"
 check_and_install "2" "jq" "brew install jq" "jq --version"
 check_and_install "3" "adb" "brew install android-platform-tools" "adb --version"
@@ -61,8 +92,6 @@ check_and_install "3" "adb" "brew install android-platform-tools" "adb --version
 download_repo
 
 source ./utils.sh
-
-default_path="$HOME/Documents/$repository_name"
 
 echo "============================================================"
 echo
@@ -77,11 +106,7 @@ else
     actual_path="$user_path"
 fi
 
-mkdir -p "$actual_path"
-cd "$actual_path" || {
-    echo "❌ Error: couldn't create folder in $actual_path"
-    exit 3
-}
+move_to_actual_path
 
 cat <<EOL >$config_file
 actualPath:$actual_path

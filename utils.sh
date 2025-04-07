@@ -199,7 +199,7 @@ function choose_adb() {
     if [[ $device_count -eq 0 ]]; then
         echo "❌ Error: There are no devices connected to ADB."
         finalize
-        exit 4
+        exit 5
     fi
 
     # Если одно устройство
@@ -222,7 +222,7 @@ function choose_adb() {
         if ! [[ $device_choice =~ ^[0-9]+$ ]] || [[ $device_choice -lt 1 ]] || [[ $device_choice -gt $device_count ]]; then
             echo "❌ Error: Incorrect device selection"
             finalize
-            exit 5
+            exit 6
         fi
 
         device=${devices[$((device_choice))]}
