@@ -2,6 +2,7 @@
 
 source ./utils.sh
 
+
 setup_app_bundle() {
   clear
   echo "You need to specify the bundle name of the application whose profiles you want to work with."
@@ -26,7 +27,6 @@ setup_app_bundle() {
       wait_for_any_key
 
       echo
-      choose_adb
       bundle=$(adb -s "$device" shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp' | grep -oE '[a-zA-Z0-9_.]+/[a-zA-Z0-9_.]+' | head -n1 | cut -d'/' -f1)
       echo "⏳ App with bundle name = '$bundle' is currently running on the $device device."
       echo "✅  Profiles will be read on the path /sdcard/Android/data/$bundle/files/profiles"
@@ -63,6 +63,8 @@ setup_app_bundle() {
   fi
 }
 
+choose_adb
+
 if ! grep -q '^appBundleName:' "$config_file"; then
   echo "appBundleName:null" >>"$config_file"
 fi
@@ -74,7 +76,6 @@ if [[ "$app_bundle_name" == "null" ]]; then
 else
 
   echo "⏳ Checking devices connected to ADB..."
-  choose_adb
   clear
 
   echo "✅ Script is ready to read profiles from the $device device on path /sdcard/Android/data/$app_bundle_name/files/profiles"
