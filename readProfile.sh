@@ -33,7 +33,7 @@ read_profile_on_keypress() {
     update_count=$((update_count + 1))
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
     echo "-------------------------------"
-    bold_text "$(dim_text "Press any key to fetch the current file content")"
+    bold_text "$(dim_text "Press Enter↵ key to fetch the current file content")"
     bold_text "$(dim_text "or press Control⌃ + C to return to the menu.")"
     echo
     echo "📄 File path: $file_path"
@@ -76,7 +76,7 @@ handle_interrupt() {
 }
 
 echo "-------------------------------"
-echo "📝 Press Enter↵ to update the profile content manually by pressing any key"
+echo "📝 Press Enter↵ to update the profile content manually by pressing key"
 echo -n "\033[3mOr enter a refresh interval in seconds for automatic updates: \033[0m"
 
 read user_input
