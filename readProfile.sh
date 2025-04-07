@@ -29,10 +29,11 @@ read_profile_on_keypress() {
   trap handle_interrupt SIGINT
   while true; do
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
+    bold_text "$(dim_text "Press any button to get the current file value.")"
+    bold_text "$(dim_text "or press Control⌃ + C to return to the menu")"
+    echo
     echo "⏳ Reading file: $file_path"
-    echo "Last updated: $current_time"
-    echo "🔁 Press any key to refresh (Ctrl+C to exit)"
-    bold_text "$(dim_text "Press Control⌃ + C to stop the script")"
+    echo "🕑 Last updated: $current_time"
     echo "-------------------------------"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
@@ -42,20 +43,21 @@ read_profile_on_keypress() {
 
 read_profile_with_interval() {
   trap handle_interrupt SIGINT
-  clear
-  update_count=$((update_count + 1))
-  current_time=$(date "+%Y-%m-%d %H:%M:%S")
-  bold_text "$(dim_text "Press Control⌃ + C to stop the script")"
-  echo ""
-  echo "Refresh interval: $interval seconds"
-  echo "Update count: $update_count"
-  echo "Last updated: $current_time"
-  echo "-------------------------------"
-  echo
-  echo "⏳ Reading file: $file_path"
-  adb -s "$device" shell "cat $file_path" | jq .
-  echo "-------------------------------"
-  sleep "$interval"
+  while true; do
+    update_count=$((update_count + 1))
+    current_time=$(date "+%Y-%m-%d %H:%M:%S")
+    bold_text "$(dim_text "Press Control⌃ + C to stop the script")"
+    echo ""
+    echo "Refresh interval: $interval seconds"
+    echo "Update count: $update_count"
+    echo "Last updated: $current_time"
+    echo "-------------------------------"
+    echo
+    echo "⏳ Reading file: $file_path"
+    adb -s "$device" shell "cat $file_path" | jq .
+    echo "-------------------------------"
+    sleep "$interval"
+  done
 }
 
 handle_interrupt() {
