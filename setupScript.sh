@@ -63,6 +63,7 @@ move_to_actual_path() {
         exit 8
     }
 
+    shopt -s nullglob
     for item in * .*; do
         [[ "$item" == "." || "$item" == ".." || ! -e "$item" ]] && continue
 
@@ -73,6 +74,7 @@ move_to_actual_path() {
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
+    shopt -u nullglob
 
     current_dir=$(pwd)
 
