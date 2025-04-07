@@ -6,7 +6,7 @@ trap - SIGINT
 setup_app_bundle() {
   clear
   echo
-  echo "You need to specify the bundle name of the application whose profiles you want to work with."
+  echo "You need to specify the bundle name of Unity application whose profiles you want to work with."
   echo
   bold_text "$(reverse_text 'Select an option from the list and enter the corresponding number:')"
   echo "    [1] Find out the app Bundle name automatically"
@@ -42,7 +42,8 @@ setup_app_bundle() {
       $command_to_run
       ;;
     2)
-      clear
+      echo
+      echo
       echo -n "📝 Enter an app Bundle name: "
       read bundle
 
@@ -51,6 +52,9 @@ setup_app_bundle() {
       else
         echo ❌ devError: There is no key appBundleName in the file $config_file
       fi
+
+      echo
+      echo "✅  Profiles will be read on the path /sdcard/Android/data/$bundle/files/profiles"
       finalize
       ;;
     esac
