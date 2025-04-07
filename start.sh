@@ -99,7 +99,7 @@ else
       setup_app_bundle
       ;;
     3)
-      exit 0
+      kill -9 $$
       ;;
     esac
   else
