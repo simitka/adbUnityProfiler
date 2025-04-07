@@ -88,7 +88,7 @@ else
   echo -n "📝 Enter a number from list: "
   read choice
 
-  if [[ "$choice" =~ ^[1-2]$ ]]; then
+  if [[ "$choice" =~ ^[1-3]$ ]]; then
     case "$choice" in
     1)
       ./chooseProfile.sh "$device"
@@ -104,10 +104,10 @@ else
     esac
   else
     clear
-    red_bg "$(bold_text '❌ Error: Enter a number from 1 to 2 and press Enter↵')"
+    red_bg "$(bold_text '❌ Error: Enter a number from 1 to 3 and press Enter↵')"
     red_bg "$(bold_text '==============================================================')"
     echo
     echo
-    setup_app_bundle
+    $command_to_run
   fi
 fi
