@@ -44,7 +44,8 @@ read_profile_on_keypress() {
 read_profile_with_interval() {
   trap handle_interrupt SIGINT
   update_count=0
-  while true; do
+  read_profile_state="true"
+  while [[ "$read_profile_state" == "true" ]]; do
     update_count=$((update_count + 1))
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
     echo "-------------------------------"
@@ -61,6 +62,8 @@ read_profile_with_interval() {
 }
 
 handle_interrupt() {
+  trap - SIGINT
+  read_profile_state="false"
   echo
   echo "👋 Returning to the menu..."
   $command_to_run
