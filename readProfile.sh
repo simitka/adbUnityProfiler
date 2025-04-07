@@ -30,11 +30,11 @@ read_profile_on_keypress() {
   while true; do
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
     echo "-------------------------------"
-    bold_text "$(dim_text "Press any key to fetch the current file content.")"
-    bold_text "$(dim_text "Or press Control⌃ + C to return to the menu.")"
+    bold_text "$(dim_text "Press any key to fetch the current file content")"
+    bold_text "$(dim_text "or press Control⌃ + C to return to the menu.")"
     echo
     echo "📄 File path: $file_path"
-    echo "🕒 Last updated: $current_time"
+    echo "⏰ Last updated: $current_time"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
     read -r -n 1
@@ -53,7 +53,7 @@ read_profile_with_interval() {
     echo "📄 File path: $file_path"
     echo "⏰ Last updated: $current_time"
     echo "🔁 Update count: $update_count"
-    echo "⏱️ Refresh interval: $interval seconds"
+    echo "🔃 Refresh interval: $interval seconds"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
     sleep "$interval"
