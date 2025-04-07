@@ -90,7 +90,7 @@ else
   if [[ "$choice" =~ ^[1-2]$ ]]; then
     case "$choice" in
     1)
-      ./chooseProfile.sh
+      ./chooseProfile.sh "$device"
       ;;
     2)
       sed -i '' "s/^appBundleName:.*/appBundleName:null/" "$config_file"
