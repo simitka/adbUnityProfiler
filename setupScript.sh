@@ -110,8 +110,6 @@ echo "\033[1m📝 Enter the path to the folder where $repository_name will be in
 echo "(or leave it blank and press Enter↵ to set to $default_path)"
 read -r user_path
 
-default_path="$HOME/Documents/$repository_name"
-
 if [[ -z "$user_path" ]]; then
     actual_path="$default_path"
 else

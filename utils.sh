@@ -3,6 +3,7 @@
 config_file="settings.conf"
 repository_name="adbUnityProfiler"
 command_to_run="adbreadprofile"
+default_path="$HOME/Documents/$repository_name"
 
 #Для примера выхова функции в функции – bold_text "$(red_text 'Красный жирный текст')"
 
