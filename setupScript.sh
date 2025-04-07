@@ -30,11 +30,13 @@ download_repo() {
             rm main.zip
 
             mv adbUnityProfiler-main/* ./
+            echo "переместили файлы"
             #rmdir adbUnityProfiler-main
 
             if [[ -f setupScript.sh ]]; then
                 echo "Removing setupScript.sh..."
                 #rm setupScript.sh
+                echo "(не)удалили файл"
             fi
         else
             echo "❌ Error: Downloaded file is empty."
