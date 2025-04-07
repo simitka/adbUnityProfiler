@@ -8,19 +8,19 @@ profiles_path="$3"
 file_path="$profiles_path/$selected_file"
 
 if [ -z "$1" ]; then
-  echo "❌ Error: ADB device is not specified"
+  echo "❌ Error: ADB device is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
   exit 14
 fi
 
 if [ -z "$2" ]; then
-  echo "❌ Error: JSON file name is not specified"
+  echo "❌ Error: JSON file name is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
   exit 15
 fi
 
 if [ -z "$3" ]; then
-  echo "❌ Error: Path to profiles folder is not specified"
+  echo "❌ Error: Path to the profiles folder is not specified."
   echo "Usage: $0 <adb_device> <json_file_name> <profiles_path>"
   exit 16
 fi
@@ -29,12 +29,12 @@ read_profile_on_keypress() {
   trap handle_interrupt SIGINT
   while true; do
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
-    bold_text "$(dim_text "Press any button to get the current file value.")"
-    bold_text "$(dim_text "or press Control⌃ + C to return to the menu")"
-    echo
-    echo "⏳ Reading file: $file_path"
-    echo "🕑 Last updated: $current_time"
     echo "-------------------------------"
+    bold_text "$(dim_text "Press any key to fetch the current file content.")"
+    bold_text "$(dim_text "Or press Control⌃ + C to return to the menu.")"
+    echo
+    echo "📄 File path: $file_path"
+    echo "🕒 Last updated: $current_time"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
     read -r -n 1
@@ -43,51 +43,44 @@ read_profile_on_keypress() {
 
 read_profile_with_interval() {
   trap handle_interrupt SIGINT
+  update_count=0
   while true; do
     update_count=$((update_count + 1))
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
-    bold_text "$(dim_text "Press Control⌃ + C to stop the script")"
-    echo ""
-    echo "Refresh interval: $interval seconds"
-    echo "Update count: $update_count"
-    echo "Last updated: $current_time"
     echo "-------------------------------"
+    bold_text "$(dim_text "Press Control⌃ + C to return to the menu.")"
     echo
-    echo "⏳ Reading file: $file_path"
+    echo "📄 File path: $file_path"
+    echo "⏰ Last updated: $current_time"
+    echo "🔁 Update count: $update_count"
+    echo "⏱️ Refresh interval: $interval seconds"
+    echo
     adb -s "$device" shell "cat $file_path" | jq .
-    echo "-------------------------------"
     sleep "$interval"
   done
 }
 
 handle_interrupt() {
-  echo ""
-  echo "👋 Exit triggered! Launching $command_to_run..."
+  echo
+  echo "👋 Returning to the menu..."
   $command_to_run
-  exit 0
 }
 
 echo "-------------------------------"
-echo "📝 Enter refresh interval in seconds"
-echo -e "\033[3mOr press Enter↵ to refresh only when a key is pressed\033[0m"
+echo "📝 Press Enter↵ to update the profile content manually by pressing any key"
+echo -n "\033[3mOr enter a refresh interval in seconds for automatic updates: \033[0m"
 
-read -r user_input
+read user_input
+clear
 
 if [[ -z "$user_input" ]]; then
   interval=0
+  read_profile_on_keypress
 elif [[ "$user_input" =~ ^[0-9]+$ ]] && [ "$user_input" -gt 0 ]; then
   interval=$user_input
-else
-  echo "❌ Invalid input. Interval must be a positive integer or empty"
-  exit 20
-fi
-
-if [[ "$interval" == "0" ]]; then
-  read_profile_on_keypress
-elif [[ "$interval" =~ ^[1-9][0-9]*$ ]]; then
-  update_count=0
   read_profile_with_interval
 else
-  echo "❌ Error: interval must be 0 or a positive integer"
-  exit 20
+  echo "❌ Error: Invalid input. Please enter update interval in seconds or leave empty for manual mode."
+  wait_for_any_key
+  ./chooseProfile.sh "$device"
 fi
