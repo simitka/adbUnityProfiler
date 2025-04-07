@@ -55,29 +55,21 @@ move_to_actual_path() {
             exit 7
         }
     else
-        echo "⏳ Folder '$actual_path' exists. Entering..."
+        echo "⏳ Moving files to folder '$actual_path'..."
     fi
 
-    cd "$actual_path" || {
-        echo "❌ Error: Failed to change directory to '$actual_path'"
-        exit 8
-    }
-
-    shopt -s nullglob
     for item in * .*; do
-        [[ "$item" == "." || "$item" == ".." || ! -e "$item" ]] && continue
-
+        [[ "$item" == "." || "$item" == ".." ]] && continue
         if ! mv -- "$item" "$actual_path"/; then
-            echo "❌ Error: an error occurred when moving file '$item' to folder '$actual_path'."
+            echo "❌ Error: an error occurred when moving '$item' to folder '$actual_path'."
             exit 7
         else
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
-    shopt -u nullglob
+    echo "✅ All files have been moved to $actual_path."
 
     current_dir=$(pwd)
-
     cd "$actual_path" ||
         {
             echo "❌ Error: Couldn't change directory to $actual_path"
@@ -112,7 +104,6 @@ echo "============================================================"
 echo
 echo "\033[1m📝 Enter the path to the folder where $repository_name will be installed:\033[0m"
 echo "(or leave it blank and press Enter↵ to set to $default_path)"
-
 read -r user_path
 
 if [[ -z "$user_path" ]]; then
