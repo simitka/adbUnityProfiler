@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-default_path="$HOME/Documents/$repository_name"
-
 check_and_install() {
     local package_number="$1"
     local package="$2"
@@ -11,17 +9,17 @@ check_and_install() {
     if ! command -v "$package" &>/dev/null; then
         echo
         echo "\033[1m❌ Error: $package is not installed.\033[0m"
-        echo "To install the $package, enter the command:"
+        echo "To install $package, run the following command:"
         echo "$install_command"
         echo
-        exit 2
+        exit 4
     else
         echo "[$package_number] ✅ $package is installed: $(eval $version_command)"
     fi
 }
 
 download_repo() {
-    echo "⏳ Starting download..."
+    echo "⏳ Downloading the repository..."
     if curl -L -o main.zip https://github.com/simitka/adbUnityProfiler/archive/refs/heads/main.zip; then
         echo "⏳ Download successful. Unpacking the archive..."
 
@@ -30,63 +28,62 @@ download_repo() {
             rm main.zip
 
             mv adbUnityProfiler-main/* ./
-            rmdir adbUnityProfiler-main
+            rm -rf adbUnityProfiler-main
 
             if [[ -f setupScript.sh ]]; then
-                echo "Removing setupScript.sh..."
+                echo "⏳ Removing setupScript.sh..."
                 rm setupScript.sh
             fi
         else
-            echo "❌ Error: Downloaded file is empty."
-            exit 4
+            echo "❌ Error: The downloaded file is empty."
+            exit 5
         fi
     else
         echo "❌ Error: Failed to download the repository."
-        exit 4
+        exit 6
     fi
-    echo "✅ Downloading and unpacking repository is complete."
+    echo "✅ Repository downloaded and unpacked successfully."
 }
 
 move_to_actual_path() {
     if [[ ! -d "$actual_path" ]]; then
-        echo "⏳ Folder '$actual_path' does not exist. Creating..."
+        echo "⏳ Folder '$actual_path' does not exist. Creating it..."
         mkdir -p "$actual_path" || {
-            echo "❌ Error: Failed to create folder '$actual_path'"
+            echo "❌ Error: Failed to create folder '$actual_path'."
             exit 7
         }
     else
-        echo "⏳ Folder '$actual_path' exists. Entering..."
+        echo "⏳ Folder '$actual_path' exists. Moving to it..."
     fi
 
     setopt nullglob
     for item in * .[^.]*; do
-        echo "test4: $(pwd)"
         [[ "$item" == "." || "$item" == ".." ]] && continue
 
         if ! mv -- "$item" "$actual_path"/; then
-            echo "❌ Error: an error occurred when moving '$item' to folder '$actual_path'."
-            exit 7
+            echo "❌ Error: Failed to move '$item' to '$actual_path'."
+            exit 8
         else
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
     unsetopt nullglob
 
-    echo "✅ All files have been moved to $actual_path."
+    echo "✅ All files have been moved to '$actual_path'."
 
     current_dir=$(pwd)
     cd "$actual_path" ||
         {
-            echo "❌ Error: Couldn't change directory to $actual_path"
-            exit 8
+            echo "❌ Error: Failed to change directory to '$actual_path'."
+            exit 9
         }
 
     rmdir "$current_dir" || {
-        echo "❌ Error: Couldn't delete folder: $current_dir"
-        exit 9
+        echo "❌ Error: Failed to remove folder: '$current_dir'."
+        exit 10
     }
 
-    echo "✅ All files have been moved to $actual_path, and you have moved to it."
+    echo "✅ Successfully moved to '$actual_path'."
 }
 
 rm /usr/local/bin/adbreadprofile
@@ -96,11 +93,11 @@ download_repo
 source ./utils.sh
 
 clear
-echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
+echo "\033[1m\033[4m$repository_name\033[0m\033[1m – A tool to read Profile contents in the Unity application on Android\033[0m"
 echo "any questions about how the script works – https://simitka.io"
 echo
 echo "⏳ Launching the setup assistant."
-echo "⏳ Check that all the necessary packages are installed..."
+echo "⏳ Checking if all necessary packages are installed..."
 echo "============================================================"
 
 check_and_install "1" "brew" "/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"" "brew --version"
@@ -112,6 +109,8 @@ echo
 echo "\033[1m📝 Enter the path to the folder where $repository_name will be installed:\033[0m"
 echo "(or leave it blank and press Enter↵ to set to $default_path)"
 read -r user_path
+
+default_path="$HOME/Documents/$repository_name"
 
 if [[ -z "$user_path" ]]; then
     actual_path="$default_path"
@@ -128,11 +127,11 @@ EOL
 
 echo
 echo
-echo "\033[1m⏳ Creating the console command '$command_to_run', which will run $repository_name\033[0m"
+echo "\033[1m⏳ Creating the console command '$command_to_run' to run $repository_name\033[0m"
 echo "(📝 enter the password from your MacOS user. The password is not displayed when you enter it.)"
 
 if [[ ! -d "/usr/local/bin" ]]; then
-    echo "⏳ /usr/local/bin folder does not exist. Creating it..."
+    echo "⏳ The '/usr/local/bin' folder does not exist. Creating it..."
     sudo mkdir -p /usr/local/bin
 fi
 
