@@ -36,7 +36,7 @@ read_profile_on_keypress() {
     echo "-------------------------------"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
-    read -n 1 -s
+    read -r -n 1
   done
 }
 
@@ -60,7 +60,7 @@ read_profile_with_interval() {
 
 handle_interrupt() {
   echo ""
-  echo "👋 Exit triggered! Launching ./start.sh..."
+  echo "👋 Exit triggered! Launching $command_to_run..."
   $command_to_run
   exit 0
 }
