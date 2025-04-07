@@ -27,13 +27,16 @@ fi
 
 read_profile_on_keypress() {
   trap handle_interrupt SIGINT
+  update_count=0
   while true; do
+    update_count=$((update_count + 1))
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
     echo "-------------------------------"
     bold_text "$(dim_text "Press any key to fetch the current file content")"
     bold_text "$(dim_text "or press Control⌃ + C to return to the menu.")"
     echo
     echo "📄 File path: $file_path"
+    echo "🔁 Update count: $update_count"
     echo "⏰ Last updated: $current_time"
     echo
     adb -s "$device" shell "cat $file_path" | jq .
