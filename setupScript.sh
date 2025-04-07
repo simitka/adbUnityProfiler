@@ -48,6 +48,21 @@ download_repo() {
 }
 
 move_to_actual_path() {
+    if [[ ! -d "$actual_path" ]]; then
+        echo "⏳ Folder '$actual_path' does not exist. Creating..."
+        mkdir -p "$actual_path" || {
+            echo "❌ Error: Failed to create folder '$actual_path'"
+            exit 7
+        }
+    else
+        echo "⏳ Folder '$actual_path' exists. Entering..."
+    fi
+
+    cd "$actual_path" || {
+        echo "❌ Error: Failed to change directory to '$actual_path'"
+        exit 8
+    }
+
     IFS=$'\n'
     for item in * .*; do
         [[ "$item" == "." || "$item" == ".." || "$item" == "$actual_path" ]] && continue
@@ -63,11 +78,11 @@ move_to_actual_path() {
 
     current_dir=$(pwd)
 
-    cd "$actual_path" || 
-    {
-        echo "❌ Error: Couldn't delete folder: $current_dir"
-        exit 8
-    }
+    cd "$actual_path" ||
+        {
+            echo "❌ Error: Couldn't delete folder: $current_dir"
+            exit 8
+        }
 
     rmdir "$current_dir" || {
         echo "❌ Error: Couldn't delete folder: $current_dir"
@@ -76,6 +91,10 @@ move_to_actual_path() {
     echo "✅ All files have been moved to $actual_path, and you have moved to it."
 
 }
+
+download_repo
+
+source ./utils.sh
 
 clear
 echo "\033[1m\033[4m$repository_name\033[0m\033[1m – helps to read the Profile contents in the Unity application on Android\033[0m"
@@ -88,10 +107,6 @@ echo "============================================================"
 check_and_install "1" "brew" "/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"" "brew --version"
 check_and_install "2" "jq" "brew install jq" "jq --version"
 check_and_install "3" "adb" "brew install android-platform-tools" "adb --version"
-
-download_repo
-
-source ./utils.sh
 
 echo "============================================================"
 echo
