@@ -27,7 +27,7 @@ setup_app_bundle() {
 
       echo
       choose_adb
-      bundle=$(adb -s "$device" shell dumpsys activity activities | grep -oE 'Task\{[^}]+ [^ ]+:([a-zA-Z0-9._]+)' | awk -F':' '{print $2}' | head -n1)
+      bundle=$(adb -s "$device" shell dumpsys window | grep -E 'mCurrentFocus|mFocusedApp' | grep -oE '[a-zA-Z0-9_.]+/[a-zA-Z0-9_.]+' | head -n1 | cut -d'/' -f1)
       echo "⏳ App with bundle name = '$bundle' is currently running on the $device device."
       echo "✅  Profiles will be read on the path /sdcard/Android/data/$bundle/files/profiles"
 
