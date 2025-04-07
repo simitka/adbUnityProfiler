@@ -63,10 +63,8 @@ move_to_actual_path() {
         exit 8
     }
 
-    IFS=$'\n'
     for item in * .*; do
-        [[ "$item" == "." || "$item" == ".." || "$item" == "$actual_path" ]] && continue
-        [[ ! -e "$item" ]] && continue
+        [[ "$item" == "." || "$item" == ".." || ! -e "$item" ]] && continue
 
         if ! mv -- "$item" "$actual_path"/; then
             echo "❌ Error: an error occurred when moving file '$item' to folder '$actual_path'."
@@ -80,7 +78,7 @@ move_to_actual_path() {
 
     cd "$actual_path" ||
         {
-            echo "❌ Error: Couldn't delete folder: $current_dir"
+            echo "❌ Error: Couldn't change directory to $actual_path"
             exit 8
         }
 
@@ -88,8 +86,8 @@ move_to_actual_path() {
         echo "❌ Error: Couldn't delete folder: $current_dir"
         exit 9
     }
-    echo "✅ All files have been moved to $actual_path, and you have moved to it."
 
+    echo "✅ All files have been moved to $actual_path, and you have moved to it."
 }
 
 download_repo
