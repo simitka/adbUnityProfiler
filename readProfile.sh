@@ -28,7 +28,8 @@ fi
 read_profile_on_keypress() {
   trap handle_interrupt INT
   update_count=0
-  while true; do
+  read_profile_state="true"
+  while [[ "$read_profile_state" == "true" ]]; do
     update_count=$((update_count + 1))
     current_time=$(date "+%Y-%m-%d %H:%M:%S")
     echo "-------------------------------"
