@@ -7,6 +7,7 @@ profiles_path="/sdcard/Android/data/$app_bundle_name/files/profiles"
 device="$1"
 
 clear
+echo
 
 if ! adb -s "$device" shell "[ -d $profiles_path ]"; then
     echo "❌ Error: Folder $profiles_path does not exist."

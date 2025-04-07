@@ -5,6 +5,7 @@ trap - SIGINT
 
 setup_app_bundle() {
   clear
+  echo
   echo "You need to specify the bundle name of the application whose profiles you want to work with."
   echo
   bold_text "$(reverse_text 'Select an option from the list and enter the corresponding number:')"
@@ -63,8 +64,11 @@ setup_app_bundle() {
   fi
 }
 
+echo
+echo "⏳ Checking devices connected to ADB..."
 choose_adb
 clear
+echo
 
 if ! grep -q '^appBundleName:' "$config_file"; then
   echo "appBundleName:null" >>"$config_file"
@@ -75,10 +79,6 @@ app_bundle_name=$(grep '^appBundleName:' "$config_file" | cut -d':' -f2 | xargs)
 if [[ "$app_bundle_name" == "null" ]]; then
   setup_app_bundle
 else
-
-  echo "⏳ Checking devices connected to ADB..."
-  clear
-
   echo "✅ Script is ready to read profiles from the $device device on path /sdcard/Android/data/$app_bundle_name/files/profiles"
   echo
   bold_text "$(reverse_text 'Select an option from the list and enter the corresponding number:')"
@@ -105,10 +105,9 @@ else
     esac
   else
     clear
+    echo
     red_bg "$(bold_text '❌ Error: Enter a number from 1 to 3 and press Enter↵')"
     red_bg "$(bold_text '==============================================================')"
-    echo
-    echo
     $command_to_run
   fi
 fi

@@ -91,7 +91,8 @@ download_repo
 source ./utils.sh
 
 clear
-echo "\033[1m\033[4m$repository_name\033[0m\033[1m – A tool to read Profile contents in the Unity application on Android\033[0m"
+echo
+echo "\033[1m\033[4m$repository_name\033[0m\033[1m – A CLI tool to read Profile contents in the Unity application on Android\033[0m"
 echo "any questions about how the script works – https://simitka.io"
 echo
 echo "⏳ Launching the setup assistant."

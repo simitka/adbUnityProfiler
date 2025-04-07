@@ -75,6 +75,7 @@ echo -n "\033[3mOr enter a refresh interval in seconds for automatic updates: \0
 
 read user_input
 clear
+echo
 
 if [[ -z "$user_input" ]]; then
   interval=0
