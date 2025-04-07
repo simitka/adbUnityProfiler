@@ -50,16 +50,24 @@ download_repo() {
 move_to_actual_path() {
     if [[ ! -d "$actual_path" ]]; then
         echo "⏳ Folder '$actual_path' does not exist. Creating..."
+        echo "test1: $(pwd)"
         mkdir -p "$actual_path" || {
             echo "❌ Error: Failed to create folder '$actual_path'"
             exit 7
         }
     else
         echo "⏳ Folder '$actual_path' exists. Entering..."
+        echo "test2: $(pwd)"
     fi
 
-    shopt -s nullglob
+    # Включаем nullglob в zsh для того, чтобы избежать ошибки, если нет файлов
+    echo "test3: $(pwd)"
+    setopt nullglob
+
+    # Перебираем все файлы в текущей директории, включая скрытые
     for item in * .[^.]*; do
+        echo "test4: $(pwd)"
+        # Пропускаем текущую и родительскую директорию
         [[ "$item" == "." || "$item" == ".." ]] && continue
 
         if ! mv -- "$item" "$actual_path"/; then
@@ -69,7 +77,9 @@ move_to_actual_path() {
             echo "✅ Moved: '$item' → '$actual_path/'"
         fi
     done
-    shopt -u nullglob
+
+    # Отключаем nullglob в zsh
+    unsetopt nullglob
 
     echo "✅ All files have been moved to $actual_path."
 
