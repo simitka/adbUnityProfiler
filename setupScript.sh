@@ -59,8 +59,9 @@ move_to_actual_path() {
     fi
 
     shopt -s nullglob
-    for item in * .*; do
+    for item in * .[^.]*; do
         [[ "$item" == "." || "$item" == ".." ]] && continue
+
         if ! mv -- "$item" "$actual_path"/; then
             echo "❌ Error: an error occurred when moving '$item' to folder '$actual_path'."
             exit 7
