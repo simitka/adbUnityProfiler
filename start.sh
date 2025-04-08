@@ -60,12 +60,11 @@ setup_app_bundle() {
       ;;
     esac
   else
-    clear
+    echo
     red_bg "$(bold_text '❌ Error: Enter a number from 1 to 2 and press Enter↵')"
     red_bg "$(bold_text '==============================================================')"
-    echo
-    echo
-    setup_app_bundle
+    wait_for_any_key
+    $command_to_run
   fi
 }
 
@@ -109,10 +108,10 @@ else
       ;;
     esac
   else
-    clear
     echo
     red_bg "$(bold_text '❌ Error: Enter a number from 1 to 3 and press Enter↵')"
     red_bg "$(bold_text '==============================================================')"
+    wait_for_any_key
     $command_to_run
   fi
 fi

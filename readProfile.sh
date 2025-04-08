@@ -70,8 +70,8 @@ handle_interrupt() {
   stty sane
   read_profile_state="false"
   echo
-  echo "👋 Returning to the menu..."
-  sleep 1
+  echo "👋 Returning to the Menu..."
+  sleep 0.5
   $command_to_run
 }
 
@@ -80,17 +80,21 @@ echo "📝 Press Enter↵ to update the profile content manually by pressing key
 echo -n "\033[3mOr enter a refresh interval in seconds for automatic updates: \033[0m"
 
 read user_input
-clear
-echo
 
 if [[ -z "$user_input" ]]; then
   interval=0
+  clear
+  echo
   read_profile_on_keypress
 elif [[ "$user_input" =~ ^[0-9]+$ ]] && [ "$user_input" -gt 0 ]; then
   interval=$user_input
+  clear
+  echo
   read_profile_with_interval
 else
+  echo
   echo "❌ Error: Invalid input. Please enter update interval in seconds or leave empty for manual mode."
   wait_for_any_key
+  clear
   ./chooseProfile.sh "$device"
 fi

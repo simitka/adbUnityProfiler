@@ -37,6 +37,7 @@ if [[ "$profile_number" =~ '^[0-9]+$' ]] && ((profile_number >= 1 && profile_num
     echo "📁 Selected file: $selected_file"
     ./readProfile.sh "$device" "$selected_file" "$profiles_path"
 else
+    echo
     echo "❌ Error: Invalid profile number entered."
     wait_for_any_key
     ./chooseProfile.sh "$device"
